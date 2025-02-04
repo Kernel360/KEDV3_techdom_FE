@@ -2,11 +2,17 @@ import { style } from '@vanilla-extract/css'
 
 import { vars } from '@/styles/theme.css'
 
+export const container = style({
+    height: '100vh',
+    padding: '40px 44px',
+    overflow: 'auto',
+})
+
 export const title = style({
     fontSize: vars.fontSizes.xlarge,
     fontWeight: vars.fontWeights.bold,
     textAlign: 'center',
-    marginTop: '60px',
+    marginTop: '20px',
 })
 
 export const formWrapper = style({

@@ -1,4 +1,5 @@
 import Badge from '@/components/common/Badge'
+import { addSpaceVehicleNumber } from '@/lib/utils/string'
 import { RightIcon } from '@/public/icons'
 import { ListItemModel } from '@/types/log'
 
@@ -10,15 +11,16 @@ interface ListItemProps {
 }
 
 const ListItem = ({ data, onClick }: ListItemProps) => {
-    const { vehicleNumber, vehicleModel, drivingDays, totalDrivingDistance, status } = data
+    const { vehicleNumber, vehicleModel, drivingDays, totalDistance, status } = data
+    const formattedVehicleNumber = addSpaceVehicleNumber(vehicleNumber)
 
     return (
         <button className={styles.container} onClick={onClick} type='button'>
             <ul className={styles.list}>
-                <li className={styles.itemWrapper}>{vehicleNumber}</li>
+                <li className={styles.itemWrapper}>{formattedVehicleNumber}</li>
                 <li className={styles.itemWrapper}>{vehicleModel}</li>
-                <li className={styles.itemWrapper}>{drivingDays}일</li>
-                <li className={styles.itemWrapper}>{totalDrivingDistance}km</li>
+                <li className={styles.itemWrapper}>{drivingDays.toLocaleString('ko-KR')}일</li>
+                <li className={styles.itemWrapper}>{totalDistance.toLocaleString('ko-KR')}km</li>
                 <li className={styles.itemWrapper}>
                     <Badge shape={'rectangle'} variant={status} />
                 </li>

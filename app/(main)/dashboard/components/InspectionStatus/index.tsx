@@ -3,12 +3,13 @@ import * as styles from './styles.css'
 type StatusType = 'required' | 'scheduled' | 'inProgress' | 'completed'
 type IconType = 'bell' | 'alert' | 'button' | 'check'
 
-export interface InspectionStatusModel {
+interface InspectionStatusModel {
     status: StatusType
     icon: React.ReactNode
     text: string
     iconType: IconType
 }
+
 interface InspectionStatusProps {
     inspectionStatusData: InspectionStatusModel[]
 }

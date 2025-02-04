@@ -1,0 +1,28 @@
+{
+    "isSuccess": true,
+    "message": "Success",
+    "errorMessage": [],
+    "result": [
+        { "coordinate": { "lat": 37.5665, "lng": 126.978 }, "count": 120 },
+        { "coordinate": { "lat": 35.1796, "lng": 129.0756 }, "count": 800 },
+        { "coordinate": { "lat": 37.4563, "lng": 126.7052 }, "count": 1500 },
+        { "coordinate": { "lat": 35.8714, "lng": 128.6014 }, "count": 1000 },
+        { "coordinate": { "lat": 36.3504, "lng": 127.3845 }, "count": 7000 },
+        { "coordinate": { "lat": 33.4996, "lng": 126.5312 }, "count": 1500 },
+        { "coordinate": { "lat": 35.16, "lng": 126.8514 }, "count": 110 },
+        { "coordinate": { "lat": 35.533, "lng": 129.3114 }, "count": 60 },
+        { "coordinate": { "lat": 36.8057, "lng": 127.1522 }, "count": 2090 },
+        { "coordinate": { "lat": 37.8854, "lng": 127.7298 }, "count": 40 },
+        { "coordinate": { "lat": 35.8284, "lng": 128.7361 }, "count": 30 },
+        { "coordinate": { "lat": 38.2022, "lng": 128.5907 }, "count": 700 },
+        { "coordinate": { "lat": 34.813, "lng": 126.3916 }, "count": 50 },
+        { "coordinate": { "lat": 35.2743, "lng": 128.663 }, "count": 800 },
+        { "coordinate": { "lat": 37.752, "lng": 128.876 }, "count": 136 },
+        { "coordinate": { "lat": 36.9921, "lng": 127.9262 }, "count": 124 },
+        { "coordinate": { "lat": 35.1234, "lng": 127.9876 }, "count": 140 },
+        { "coordinate": { "lat": 36.0151, "lng": 129.3446 }, "count": 93 },
+        { "coordinate": { "lat": 37.3141, "lng": 127.8987 }, "count": 377 }
+    ],
+    "errorCode": 0,
+    "timestamp": 1700000000
+}

@@ -12,6 +12,9 @@ export const container = style({
     fontWeight: vars.fontWeights.bold,
     fontSize: vars.fontSizes.mediumPlus,
     border: 'none',
+    ':hover': {
+        backgroundColor: vars.colors.gray[50],
+    },
 })
 
 export const list = style({

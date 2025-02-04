@@ -7,4 +7,6 @@ export const layoutContainer = style({
 
 export const mainContent = style({
     flex: 1,
+    maxHeight: '100vh',
+    overflow: 'auto',
 })

@@ -10,8 +10,8 @@ export const base = style({
     alignItems: 'center',
     justifyContent: 'center',
     fontWeight: vars.fontWeights.bold,
-    border: `1px solid ${vars.colors.gray[200]}`,
     borderRadius: '8px',
+    color: vars.colors.black,
     ':disabled': {
         cursor: 'not-allowed',
         opacity: vars.opacity[50],

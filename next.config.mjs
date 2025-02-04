@@ -6,6 +6,7 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const nextConfig = {
     webpack(config) {
         const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
+
         if (fileLoaderRule) {
             fileLoaderRule.exclude = /\.svg$/
         }
@@ -25,6 +26,16 @@ const nextConfig = {
         })
 
         return config
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'github.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
     },
 }
 

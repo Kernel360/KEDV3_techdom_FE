@@ -1,70 +1,87 @@
-// import { API_URL } from '@/constants/api'
-// import { apiClient } from '@/lib/apis/client'
-// import { DateTime } from '@/app/route/types/date'
-// import { formatToISODate } from '@/lib/utils/date'
-import mockRoutesData from '@/mock/vehicle_route_data.json'
-// import mockRoutesData from '@/mock/vehicle_route_data.json'
-import { VehicleDetailsModel, VehicleStatusType } from '@/types/vehicle'
+import { RegisterVehicleModel, VehicleTypeModel } from '@/app/(main)/log/register/types'
+import { httpClient } from '@/lib/apis/client'
+import { normalizeVehicleResponse } from '@/lib/utils/normalize'
+import { removeSpaces } from '@/lib/utils/string'
 
-// 예시 API 구조
-export const vehicleAPI = {
-    fetchVehicleData: async (_vehicleNumber: string) => {
-        // const response = await apiClient.get(`${API_URL}/api/v1/vehicles?vehicleNumber=${vehicleNumber}`)
-
-        const response = {
-            isSuccess: true,
-            message: '요청 성공',
-            result: {
-                vehicleId: 'V123',
-                vehicleNumber: '54하2902',
-                firstDateAt: '2024-01-15T09:30:00',
-                lastDateAt: '2024-01-21T14:30:00',
+export const vehicleService = {
+    // 개별차량 검색 조회
+    getVehicleInfo: async (vehicleNumber: string) => {
+        const response = await httpClient.get(`api/v1/vehicle/search`, {
+            params: {
+                'vehicle-number': removeSpaces(vehicleNumber),
             },
+        })
+
+        if (!response.data.isSuccess) {
+            if (response.data.errorCode === 1003) {
+                return { isValid: false, value: '등록되지 않은 차량입니다.' }
+            }
         }
 
-        return response.result
+        const normalizeResult = normalizeVehicleResponse(response.data.result)
+        return { isValid: true, value: normalizeResult }
     },
-    fetchVehicleRoutesData: async () => {
-        // fetchVehicleRoutesData: async (vehicleId: string, startDate: DateTime, endDate: DateTime, interval = 60) => {
-        // const formattedStartDate = formatToISODate(startDate)
-        // const formattedEndDate = formatToISODate(endDate)
-        // const response = await apiClient.get(
-        //     `${API_URL}/api/vi/vehicles/${vehicleId}/routes?startTime=${formattedStartDate}&endTime=${formattedEndDate}&interval=${interval}`,
-        // )
-        // console.log(formattedStartDate, formattedEndDate, vehicleId, interval)
+    // 개별차량 상세정보 조회
+    getVehicleDetailInfo: async (vehicleId: string) => {
+        const response = await httpClient.get(`api/v1/vehicle/${vehicleId}`)
 
-        // return response.result
-
-        return mockRoutesData
+        return response.data.result
     },
-    // fetchVehicleDetails: async (vehicleId: string) => {
-    fetchVehicleDetails: async (): Promise<VehicleDetailsModel> => {
-        // const response = await apiClient.get(`${API_URL}/api/v1/vehicles/${vehicleId}`)
-        const response = {
-            isSuccess: true,
-            message: '요청 성공',
-            result: {
-                department: '04/09 조직',
-                vehicleId: 'V123',
-                vehicleNumber: '54하7056',
-                driverName: '홍길동',
-                status: {
-                    type: 'ON' as VehicleStatusType, // "ON" | "OFF"
-                    speed: 60,
-                    lastEngineOn: '2024-12-24T08:30:00',
-                    lastEngineOff: '2024-12-23T18:30:00',
-                },
-                dailyStatus: {
-                    distance: 152.4,
-                    drivingTime: 18000,
-                },
-                location: {
-                    lat: 37.805,
-                    lng: 128.9016,
-                    lastUpdated: '2024-12-24T10:30:00',
-                },
+    // 시동 여부에 따른 차량 현황 조회
+    getVehicleStatus: async () => {
+        const response = await httpClient.get(`api/v1/vehicle/status`)
+
+        return response.data.result
+    },
+    getVehicleOperationPeriod: async (vehicleNumber: string) => {
+        const response = await httpClient.get(`api/v1/vehicle`, {
+            params: {
+                vehicleNumber: removeSpaces(vehicleNumber),
             },
+        })
+
+        if (!response.data.result) {
+            return { isValid: false, value: '등록되지 않은 차량입니다.' }
         }
-        return response.result
+
+        return { isValid: true, value: response.data.result }
+    },
+    getVehicleType: async (): Promise<VehicleTypeModel[]> => {
+        const response = await httpClient.get(`api/v1/log/vehicle-type`)
+
+        return response.data.result
+    },
+
+    postVehicleInfo: async (data: RegisterVehicleModel) => {
+        const response = await httpClient.post(`api/v1/vehicle/register`, data)
+
+        if (!response.data.isSuccess) {
+            if (response.data.errorCode === 1001) {
+                return {
+                    isSuccess: false,
+                    message: '해당 차종이 존재하지 않습니다.',
+                }
+            }
+            if (response.data.errorCode === 1002) {
+                return {
+                    isSuccess: false,
+                    message: '해당 차종이 존재하지 않습니다.',
+                }
+            }
+        }
+
+        return response.data.result
+    },
+
+    deleteVehicle: async (id: number) => {
+        const response = await httpClient.delete(`api/v1/vehicle/${id}`)
+
+        if (!response.data && response.data.errorCode === 1006) {
+            return {
+                isSuccess: false,
+                message: '해당 차종이 존재하지 않습니다.',
+            }
+        }
+        return response.data
     },
 }

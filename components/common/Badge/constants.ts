@@ -4,9 +4,9 @@ export const BADGE_SHAPE = {
 } as const
 
 export const OPERATION_STATUS = {
-    OPERATING: '운행중',
-    NOT_OPERATING: '미운행',
-    NOT_CONTROLLED: '미관제',
+    IN_OPERATION: '운행중',
+    NOT_DRIVEN: '미운행',
+    NOT_REGISTERED: '미관제',
 } as const
 
 export const VEHICLE_ROLE = {

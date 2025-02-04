@@ -3,12 +3,11 @@ import { style } from '@vanilla-extract/css'
 import { vars } from '@/styles/theme.css'
 
 export const container = style({
-    width: '100%',
     height: '100vh',
     backgroundColor: vars.colors.dashboard,
     display: 'flex',
     gap: '34px',
-    padding: '30px',
+    padding: '24px',
 })
 
 export const leftSection = style({
@@ -36,7 +35,7 @@ export const introduce = style({
     fontWeight: vars.fontWeights.extraBold,
     display: 'flex',
     flexDirection: 'column',
-    marginLeft: '40px',
+    marginLeft: '24px',
 })
 
 export const userName = style({
@@ -48,7 +47,6 @@ export const searchInputWrapper = style({
 })
 
 export const mapWrapper = style({
-    width: '100%',
     height: '100%',
     borderRadius: '14px',
     overflow: 'hidden',

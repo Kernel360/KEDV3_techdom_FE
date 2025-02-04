@@ -1,13 +1,13 @@
 'use client'
 
-import { createPortal } from 'react-dom'
+// import { createPortal } from 'react-dom'
 
 import { AlertIcon } from '@/public/icons'
 
 import SquareButton from '../Button/SquareButton'
 
 import * as styles from './styles.css'
-import { StatusType, ModalMessageType } from './types'
+import { ModalMessageType, StatusType } from './types'
 
 interface ModalProps {
     isOpen?: boolean
@@ -15,6 +15,7 @@ interface ModalProps {
     message: ModalMessageType
     variant: StatusType
     onClose: () => void
+    onConfirm?: () => void
 }
 
 const Modal = ({
@@ -23,9 +24,11 @@ const Modal = ({
     message,
     variant,
     onClose,
+    onConfirm,
 }: ModalProps) => {
-    const modalRoot = document.getElementById('modal-root')
-    if (!isOpen || !modalRoot) return null
+    // const modalRoot = document.getElementById('modal-root')
+    // if (!isOpen || !modalRoot) return null
+    if (!isOpen) return null
 
     const handleOverlayClick = () => {
         if (variant.variant === 'alert') {
@@ -33,7 +36,8 @@ const Modal = ({
         }
     }
 
-    return createPortal(
+    // return createPortal(
+    return (
         <>
             <div
                 className={`${styles.overlay} ${variant.variant === 'alert' ? styles.clickableOverlay : ''}`}
@@ -49,7 +53,9 @@ const Modal = ({
                             <SquareButton onClick={onClose} color='primary'>
                                 {variant.cancelButton}
                             </SquareButton>
-                            <SquareButton color='primary'>{variant.confirmButton}</SquareButton>
+                            <SquareButton color='primary' onClick={onConfirm}>
+                                {variant.confirmButton}
+                            </SquareButton>
                         </>
                     ) : (
                         <SquareButton onClick={onClose} color='primary'>
@@ -58,8 +64,8 @@ const Modal = ({
                     )}
                 </div>
             </div>
-        </>,
-        modalRoot,
+        </>
+        // modalRoot,
     )
 }
 

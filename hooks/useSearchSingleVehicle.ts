@@ -1,10 +1,10 @@
-import { ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEventHandler, useState } from 'react'
 
 import { ZOOM_LEVEL } from '@/constants/map'
 import { useMapControl } from '@/hooks/useMapControl'
 import { useModal } from '@/hooks/useModal'
+import { vehicleService } from '@/lib/apis'
 import { validateVehicleNumber } from '@/lib/utils/validation'
-import mockData from '@/mock/single_vehicle_search_ok.json'
 import { VehicleInfoModel } from '@/types/vehicle'
 
 export const useSearchSingleVehicle = () => {
@@ -15,26 +15,8 @@ export const useSearchSingleVehicle = () => {
     const { isOpen, modalMessage, closeModal, showMessage } = useModal()
     const { mapState, updateMapLocation } = useMapControl()
 
-    useEffect(() => {
-        const getSingleVehicleData = () => {
-            // TODO: 실제 데이터페칭으로 수정
-            const data = mockData.vehicle
-
-            const singleVehicleData = {
-                vehicleId: data.vehicleId,
-                vehicleNumber: data.vehicleNumber,
-                status: data.status,
-                location: { lat: data.lat, lng: data.lng },
-            }
-
-            setVehicleInfo(singleVehicleData)
-        }
-
-        getSingleVehicleData()
-    }, [])
-
-    const handleVehicleSearch = () => {
-        if (!vehicleInfo) return
+    const handleVehicleSearch = async () => {
+        if (!searchTerm) return
 
         const validation = validateVehicleNumber(searchTerm)
 
@@ -43,20 +25,26 @@ export const useSearchSingleVehicle = () => {
             return
         }
 
-        // TODO: API 호출 로직으로 변경하기
-        if (validation.value !== mockData.vehicle.vehicleNumber) {
-            showMessage('등록되지 않은 차량번호입니다.')
+        const result = await vehicleService.getVehicleInfo(searchTerm)
+
+        if (!result.isValid) {
+            showMessage(result.value as string)
             return
         }
 
+        if (typeof result.value === 'string') return
+
+        const vehicleInfo = result.value
+
         updateMapLocation(
             {
-                lat: vehicleInfo?.location.lat,
-                lng: vehicleInfo?.location.lng,
+                lat: vehicleInfo?.coordinate.lat,
+                lng: vehicleInfo?.coordinate.lng,
             },
             ZOOM_LEVEL.SINGLE_VEHICLE,
         )
 
+        setVehicleInfo(vehicleInfo)
         setIsVehicleVisible(true)
         setSearchTerm('')
     }
@@ -74,6 +62,7 @@ export const useSearchSingleVehicle = () => {
         isOpen,
         handleVehicleSearch,
         handleSearchChange,
+        updateMapLocation,
         closeModal,
     }
 }

@@ -1,5 +1,5 @@
 import './font.css.ts'
-import './reset.css.ts'
 import './global.css.ts'
-import './theme.css.ts'
 import './layout.css'
+import './reset.css.ts'
+import './theme.css.ts'

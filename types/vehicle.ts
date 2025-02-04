@@ -1,13 +1,27 @@
 import { LatLng } from '@/types/location'
 
+export interface VehicleInfoResponse {
+    vehicleId: string
+    vehicleNumber: string
+    recentCycleInfo: RecentCycleInfo
+    status: string
+}
+
+// 상세 클러스터링 데이터 (차량 10대 미만)
 export interface VehicleInfoModel {
     vehicleId: string
     vehicleNumber: string
-    status: string
-    location: LatLng
+    coordinate: LatLng
 }
 
-export interface VehicleDateModel {
+interface RecentCycleInfo {
+    speed: number
+    lat: number
+    lng: number
+    lastUpdated: string
+}
+
+export interface VehicleOperationPeriodModel {
     vehicleId: string
     vehicleNumber: string
     searchableDates: {
@@ -17,25 +31,30 @@ export interface VehicleDateModel {
 }
 
 export interface VehicleDetailsModel {
-    department: string
-    vehicleId: string
-    vehicleNumber: string
-    driverName: string
-    status: {
-        type: VehicleStatusType
-        speed: number
+    recentVehicleInfo: {
+        vehicleId: number
+        vehicleNumber: string
+        status: string
         lastEngineOn: string
         lastEngineOff: string
     }
-    dailyStatus: {
-        distance: number
-        drivingTime: number
-    }
-    location: {
+    recentCycleInfo: {
+        speed: number
         lat: number
         lng: number
         lastUpdated: string
     }
+    todayDrivingHistory: {
+        distance: number
+        drivingTime: number
+    }
+    vehicleCompanyInfo: {
+        companyName: string
+    }
 }
 
-export type VehicleStatusType = 'ON' | 'OFF'
+export interface VehicleStatusModel {
+    allVehicles: number
+    engineOnVehicles: number
+    engineOffVehicles: number
+}

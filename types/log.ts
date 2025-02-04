@@ -3,7 +3,7 @@ export interface ListItemModel {
     vehicleNumber: string
     vehicleModel: string
     drivingDays: number
-    totalDrivingDistance: number
+    totalDistance: number
     status: VehicleStatusType
 }
 

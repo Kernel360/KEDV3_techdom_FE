@@ -1,27 +1,62 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import Calendar from '@/app/(main)/dashboard/components/Calendar'
+import VehicleMarker from '@/app/(main)/location/components/VehicleMarker'
 import SearchInput from '@/components/common/Input/SearchInput'
+import Modal from '@/components/common/Modal'
+import { ModalMessageType } from '@/components/common/Modal/types'
 import Map from '@/components/domain/map/Map'
+import { useSearchSingleVehicle } from '@/hooks/useSearchSingleVehicle'
 import { WhiteAlertIcon, WhiteBellIcon, WhiteCheckIcon, WhiteOnButtonIcon } from '@/public/icons'
+// import { useAuthStore } from '@/stores/useAuthStore'
 
 import InspectionStatus from './components/InspectionStatus'
-import NoticeBoard from './components/NoticeBoard'
-import VehicleStatus from './components/VehicleStatus'
+import NoticeListBoard from './components/NoticeListBoard'
+import VehicleStatusPanel from './components/VehicleStatusPanel'
 import * as styles from './styles.css'
 
 const DashboardPage = () => {
+    const {
+        vehicleInfo,
+        mapState,
+        isVehicleVisible,
+        searchTerm,
+        modalMessage,
+        isOpen,
+        handleVehicleSearch,
+        handleSearchChange,
+        closeModal,
+    } = useSearchSingleVehicle()
+
+    const [companyName, setCompanyName] = useState<string>('')
+
+    // const user = useAuthStore((state) => state.user)
+    useEffect(() => {
+        const companyName = localStorage.getItem('company_name') || '모니카'
+
+        setCompanyName(companyName)
+    }, [])
+
+    const isVehicleMarkerVisible = !!(isVehicleVisible && vehicleInfo)
+
     return (
         <div className={styles.container}>
             <section className={styles.leftSection}>
                 <header className={styles.header}>
                     <p className={styles.introduce}>
                         안녕하세요,
-                        <span className={styles.userName}>쏘카님👋</span>
+                        <span className={styles.userName}>{companyName} 님 👋</span>
                     </p>
 
                     <div className={styles.searchInputWrapper}>
-                        <SearchInput icon={'/icons/search-icon.svg'} />
+                        <SearchInput
+                            icon='/icons/search-icon.svg'
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            onSubmit={handleVehicleSearch}
+                        />
                     </div>
                 </header>
 
@@ -54,29 +89,12 @@ const DashboardPage = () => {
                     ]}
                 />
 
-                <VehicleStatus
-                    vehicleStatusData={[
-                        {
-                            type: 'total',
-                            text: '전체 차량',
-                        },
-                        {
-                            type: 'active',
-                            text: '운행중 차량',
-                        },
-                        {
-                            type: 'inactive',
-                            text: '미운행 차량',
-                        },
-                        {
-                            type: 'disabled',
-                            text: '미관제 차량',
-                        },
-                    ]}
-                />
+                <VehicleStatusPanel />
 
                 <div className={styles.mapWrapper}>
-                    <Map />
+                    <Map center={mapState.center} zoom={mapState.level}>
+                        {isVehicleMarkerVisible && <VehicleMarker vehicleInfo={vehicleInfo} />}
+                    </Map>
                 </div>
             </section>
 
@@ -111,25 +129,15 @@ const DashboardPage = () => {
                     ]}
                 />
 
-                <NoticeBoard
-                    noticeBoardData={[
-                        {
-                            id: 1,
-                            title: '2025년 1분기 차량 정기점검 안내',
-                            description:
-                                '2025년 1분기 차량 정기점검이 진행될 예정입니다. 담당자들은 일정을 확인하시고 차질없이 준비해주시기 바랍니다.',
-                            imageUrl: '/images/notice-1.jpg',
-                        },
-                        {
-                            id: 2,
-                            title: '차량 관리 시스템 업데이트 공지',
-                            description:
-                                '관제 시스템 2.0 버전이 출시됩니다. 주요 업데이트 내용은 실시간 모니터링 기능 개선과 보고서 자동화입니다.',
-                            imageUrl: '/images/notice-2.jpg',
-                        },
-                    ]}
-                />
+                <NoticeListBoard />
             </section>
+
+            <Modal
+                isOpen={isOpen}
+                message={modalMessage as ModalMessageType}
+                variant={{ variant: 'alert', confirmButton: '확인' }}
+                onClose={closeModal}
+            />
         </div>
     )
 }

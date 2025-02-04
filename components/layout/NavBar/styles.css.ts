@@ -78,11 +78,35 @@ export const sideFooter = style({
     },
 })
 
+export const logoutButton = style({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    padding: '12px',
+    borderRadius: '4px',
+    color: vars.colors.black,
+    ':hover': {
+        backgroundColor: vars.colors.gray[50],
+    },
+    '@media': {
+        [mediaQuery.mobile]: {
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
+            textAlign: 'center',
+            padding: '4px 0',
+            fontSize: vars.fontSizes.xsmall,
+            width: '100%',
+        },
+    },
+})
+
 export const themeControl = style({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '8px',
+    padding: '12px',
 })
 
 export const themeInfo = style({

@@ -34,6 +34,7 @@ export const modal = style({
     boxShadow: `0px 4px 4px 0px ${vars.colors.shadow[400]}`,
     zIndex: vars.zIndex.modal,
     borderRadius: '12px',
+    whiteSpace: 'pre-line',
 })
 
 export const xButton = style({
@@ -48,6 +49,7 @@ export const message = style({
     textAlign: 'center',
     lineHeight: 1.8,
     color: vars.colors.black,
+    whiteSpace: 'pre-line',
 })
 
 export const buttonWrapper = style({

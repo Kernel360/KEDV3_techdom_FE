@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ComponentPropsWithoutRef, ReactNode } from 'react'
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 import { BaseButton } from '../BaseButton'
 
@@ -11,8 +11,8 @@ type ColorType = 'primary' | 'secondary'
 
 interface RoundButtonProps extends ComponentPropsWithoutRef<'button'> {
     children: ReactNode
-    size: SizeType
-    color: ColorType
+    size?: SizeType
+    color?: ColorType
     className?: string
 }
 

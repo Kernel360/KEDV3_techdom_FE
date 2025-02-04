@@ -1,12 +1,29 @@
+'use client'
+
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 import Switch from '@/components/common/Switch'
 import NavItem from '@/components/layout/NavBar/NavItem'
 import { navigationItems } from '@/constants/navigation'
+import { useAuth } from '@/hooks/useAuth'
+// import { useAuthStore } from '@/stores/useAuthStore'
 
 import * as styles from './styles.css'
 
 const NavBar = () => {
+    const { logout } = useAuth()
+    // const user = useAuthStore((state) => state.user)
+
+    const [useEmail, setUserEmail] = useState<string>('')
+
+    // const user = useAuthStore((state) => state.user)
+    useEffect(() => {
+        const useEmail = localStorage.getItem('email') || 'b6f2@monicar.com'
+
+        setUserEmail(useEmail)
+    }, [])
+
     return (
         <aside className={styles.navbar}>
             <nav className={styles.navContainer}>
@@ -14,8 +31,7 @@ const NavBar = () => {
                     <Image src='/box-logo.png' alt='박스 로고 이미지' width={48} height={48} />
                     <div className={styles.logoInfo}>
                         <Image src='/text-logo.png' alt='텍스트 로고 이미지' width={104} height={22} />
-                        {/* TODO: 실제 유저 이메일로 교체 예정 */}
-                        <p className={styles.userEmail}>socar@gmail.com</p>
+                        <p className={styles.userEmail}>{useEmail}</p>
                     </div>
                 </div>
 
@@ -27,7 +43,10 @@ const NavBar = () => {
             </nav>
 
             <footer className={styles.sideFooter}>
-                <NavItem label='로그아웃' path='/logout' iconSrc='/icons/sign-out-icon.svg' />
+                <button className={styles.logoutButton} onClick={logout}>
+                    <Image src='/icons/sign-out-icon.svg' alt={`로그아웃 아이콘`} width={20} height={20} />
+                    <span>로그아웃</span>
+                </button>
                 <div className={styles.themeControl}>
                     <div className={styles.themeInfo}>
                         <Image src='/icons/sun-icon.svg' alt='아이콘' width={20} height={20} />

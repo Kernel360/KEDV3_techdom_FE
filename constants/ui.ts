@@ -7,7 +7,7 @@ export const MODAL_MESSAGES = {
         NOT_FOUND: '등록되지 않은 차량번호입니다.',
         REQUIRED: '차량번호를 입력해주세요.',
         INVALID_CHARACTERS: '차량번호는 숫자/한글만 입력 가능합니다.',
-        INVALID_FORMAT: '올바른 차량번호 형식이 아닙니다.',
+        INVALID_FORMAT: '올바른 차량번호 형식이 아닙니다.\n(예시 : 12가 1234 또는 123가 1234)',
         DELETE_CONFIRM: '삭제된 차량 정보는 복구할 수 없습니다. 정말 삭제하시겠습니까?',
     },
 } as const

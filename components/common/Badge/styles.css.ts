@@ -39,9 +39,9 @@ const greenStyle = {
 }
 
 export const variant = styleVariants({
-    [OPERATION_STATUS.OPERATING]: pinkStyle,
-    [OPERATION_STATUS.NOT_OPERATING]: greenStyle,
-    [OPERATION_STATUS.NOT_CONTROLLED]: redStyle,
+    [OPERATION_STATUS.IN_OPERATION]: pinkStyle,
+    [OPERATION_STATUS.NOT_DRIVEN]: greenStyle,
+    [OPERATION_STATUS.NOT_REGISTERED]: redStyle,
     [VEHICLE_ROLE.GENERAL]: pinkStyle,
     [VEHICLE_ROLE.COMMUTE]: greenStyle,
 })

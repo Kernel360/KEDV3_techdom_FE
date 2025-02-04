@@ -1,7 +1,7 @@
 'use client'
 
 import { Accordion } from '@mantine/core'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import DateTimeSelect from '@/app/(main)/route/components/RouteSearchPanel/DateTimeSelect'
 import { DateTime } from '@/app/(main)/route/types/date'
@@ -11,10 +11,13 @@ import Modal from '@/components/common/Modal'
 import { ModalMessageType } from '@/components/common/Modal/types'
 import { ZOOM_LEVEL } from '@/constants/map'
 import { useSearchVehicle } from '@/hooks/useSearchVehicle'
-import { vehicleAPI } from '@/lib/apis'
+import { routeService } from '@/lib/apis/route'
 import { formatISODateToKorean } from '@/lib/utils/date'
+import { normalizeCoordinate } from '@/lib/utils/normalize'
 import { validateDateSelection } from '@/lib/utils/validation'
+import { vars } from '@/styles/theme.css'
 import { LatLng } from '@/types/location'
+import { VehicleRoutePoint } from '@/types/map'
 
 import * as styles from './styles.css'
 
@@ -23,21 +26,25 @@ interface RouteSearchPanelProps {
     onMapLocationChange: (location: LatLng, level: (typeof ZOOM_LEVEL)[keyof typeof ZOOM_LEVEL]) => void
 }
 
-const RouteSearchPanel = ({ onPathsChange, onMapLocationChange }: RouteSearchPanelProps) => {
+const RouteSearchPanel = ({ onPathsChange }: RouteSearchPanelProps) => {
     const [inputValue, setInputValue] = useState('')
     const [startDate, setStartDate] = useState<DateTime>({ year: '', month: '', date: '', hour: '', minute: '' })
     const [endDate, setEndDate] = useState<DateTime>({ year: '', month: '', date: '', hour: '', minute: '' })
 
-    const { searchedVehicle, searchableDates, isOpen, modalMessage, searchVehicle, closeModal } =
+    const { searchedVehicle, searchableDates, isOpen, modalMessage, searchVehicle, setSearchableDates, closeModal } =
         useSearchVehicle(inputValue)
 
-    const { isValidDate, isAllSelected, isWithSearchableRange, isValidSelectRange } = validateDateSelection(
+    useEffect(() => {
+        if (!searchedVehicle) {
+            setSearchableDates({ firstDateAt: '', lastDateAt: '' })
+        }
+    }, [searchedVehicle, setSearchableDates])
+
+    const { isValidDate, isAllSelected, isValidSelectRange } = validateDateSelection(
         startDate,
         endDate,
         searchableDates,
     )
-
-    const isSelectable = !!searchableDates.firstDateAt && !!searchableDates.lastDateAt
 
     const handleSubmit = async () => {
         if (!isValidDate()) {
@@ -45,10 +52,10 @@ const RouteSearchPanel = ({ onPathsChange, onMapLocationChange }: RouteSearchPan
             return
         }
 
-        if (!isWithSearchableRange()) {
-            alert(`조회 가능한 일은 ${searchableDates.firstDateAt} ~ ${searchableDates.lastDateAt}`)
-            return
-        }
+        // if (!isWithSearchableRange()) {
+        //     alert(`조회 가능한 일은 ${searchableDates.firstDateAt} ~ ${searchableDates.lastDateAt}`)
+        //     return
+        // }
 
         if (!isValidSelectRange()) {
             alert('종료 일시는 시작 일시보다 같거나 빠르면 안됩니다')
@@ -59,17 +66,19 @@ const RouteSearchPanel = ({ onPathsChange, onMapLocationChange }: RouteSearchPan
             return
         }
 
-        const routesData = await vehicleAPI.fetchVehicleRoutesData()
-        // const routesData = await vehicleAPI.fetchVehicleRoutesData(searchedVehicle.vehicleId, startDate, endDate)
-        const paths = routesData.result.routes.map((route) => ({
-            lat: route.lat,
-            lng: route.lon,
+        const vehiclePaths = await routeService.getVehicleRoutesData(searchedVehicle.vehicleId, startDate, endDate)
+
+        const paths = vehiclePaths.routes.map((route: VehicleRoutePoint) => ({
+            lat: normalizeCoordinate(route.lat),
+            lng: normalizeCoordinate(route.lng),
         }))
 
         onPathsChange(paths)
-        onMapLocationChange({ lat: 37.417117, lng: 126.98816 }, 8)
+        // onMapLocationChange({ lat: 37.417117, lng: 126.98816 }, 8)
         // onMapLocationChange(INITIAL_MAP_STATE.center, 12)
     }
+
+    const isSelectable = !!searchableDates.firstDateAt && !!searchableDates.lastDateAt
 
     return (
         <Accordion defaultValue='경로조회' className={styles.accordion} unstyled>
@@ -95,7 +104,7 @@ const RouteSearchPanel = ({ onPathsChange, onMapLocationChange }: RouteSearchPan
                                 <p className={styles.searchableDate}>
                                     <span className={styles.searchableDateSpan}>조회 가능 기간</span>
                                     {formatISODateToKorean(searchableDates.firstDateAt)}
-                                    <span style={{ color: '#d3d3d3' }}>~</span>
+                                    <span style={{ color: vars.colors.gray[400] }}>~</span>
                                     {formatISODateToKorean(searchableDates.lastDateAt)}
                                 </p>
                             )}

@@ -27,7 +27,7 @@ const meta: Meta<typeof Badge> = {
         variant: {
             control: 'select',
             options: [...Object.values(OPERATION_STATUS), ...Object.values(VEHICLE_ROLE)],
-            defaultValue: OPERATION_STATUS.OPERATING,
+            defaultValue: OPERATION_STATUS.IN_OPERATION,
             description: '뱃지 상태 (운행상태: 운행중/미운행/미관제, 차량용도: 일반업무/출퇴근)',
             table: {
                 type: { summary: 'OperationStatus | VehicleRole' },
@@ -40,24 +40,24 @@ export default meta
 
 type StoryType = StoryObj<typeof Badge>
 
-export const RectangleOperating: StoryType = {
+export const RectangleInOperation: StoryType = {
     args: {
         shape: 'rectangle',
-        variant: OPERATION_STATUS.OPERATING,
+        variant: OPERATION_STATUS.IN_OPERATION,
     },
 }
 
-export const RectangleNotOperating: StoryType = {
+export const RectangleNotDriven: StoryType = {
     args: {
         shape: BADGE_SHAPE.RECTANGLE,
-        variant: OPERATION_STATUS.NOT_OPERATING,
+        variant: OPERATION_STATUS.NOT_DRIVEN,
     },
 }
 
-export const RectangleNotControlled: StoryType = {
+export const RectangleNotRegistered: StoryType = {
     args: {
         shape: BADGE_SHAPE.RECTANGLE,
-        variant: OPERATION_STATUS.NOT_CONTROLLED,
+        variant: OPERATION_STATUS.NOT_REGISTERED,
     },
 }
 
@@ -78,6 +78,6 @@ export const CircleCommute: StoryType = {
 export const CircleOperating: StoryType = {
     args: {
         shape: BADGE_SHAPE.CIRCLE,
-        variant: OPERATION_STATUS.OPERATING,
+        variant: OPERATION_STATUS.IN_OPERATION,
     },
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { ComponentPropsWithoutRef, forwardRef, KeyboardEvent } from 'react'
+import { ComponentPropsWithoutRef, forwardRef } from 'react'
 
 import BaseInput from '../BaseInput'
 
@@ -15,20 +15,9 @@ interface SearchInputProps extends ComponentPropsWithoutRef<'input'> {
 
 const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     ({ icon, className = '', onSubmit, ...props }, ref) => {
-        const handleEnterDown = (event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === 'Enter' && onSubmit) {
-                onSubmit()
-            }
-        }
-
         return (
             <div className={styles.container}>
-                <BaseInput
-                    ref={ref}
-                    className={`${styles.input} ${className}`}
-                    onKeyDown={handleEnterDown}
-                    {...props}
-                />
+                <BaseInput ref={ref} className={`${styles.input} ${className}`} onSubmit={onSubmit} {...props} />
                 {icon && (
                     <button className={styles.iconWrapper} onClick={onSubmit}>
                         <Image src={icon} alt='서치인풋 아이콘' width={28} height={28} />

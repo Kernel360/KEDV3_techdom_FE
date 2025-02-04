@@ -11,6 +11,7 @@ export const container = style({
     gap: '20px',
     backgroundColor: vars.colors.white,
     borderRadius: '12px',
+    fontWeight: vars.fontWeights.bold,
 })
 
 const iconWrapperBase = style({
@@ -40,7 +41,6 @@ export const statusCard = recipe({
         height: '100%',
         borderRadius: '11px',
         color: vars.colors.gray[800],
-        fontWeight: vars.fontWeights.bold,
         padding: '16px',
     },
     variants: {

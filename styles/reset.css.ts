@@ -27,7 +27,6 @@ globalStyle('img, picture, video, canvas', {
 globalStyle('svg', {
     display: 'block',
     width: '100%',
-    height: '100%',
 })
 
 globalStyle('input, button, textarea, select', {
