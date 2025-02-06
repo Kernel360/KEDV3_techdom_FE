@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react'
 // import { CustomOverlayMap } from 'react-kakao-maps-sdk'
 
 // import CustomMarker from '@/app/(main)/location/components/CustomMarker'
+import { CustomOverlayMap } from 'react-kakao-maps-sdk'
+
 import VehicleMarker from '@/app/(main)/location/components/VehicleMarker'
 import Map from '@/components/domain/map/Map'
 import { useMapStatus } from '@/hooks/useCurrentMapStatus'
@@ -12,7 +14,7 @@ import { clusterService } from '@/lib/apis/cluster'
 import { LatLng } from '@/types/location'
 import { ClusterPoint, MapState } from '@/types/map'
 import { VehicleInfoModel } from '@/types/vehicle'
-import { CustomOverlayMap } from 'react-kakao-maps-sdk'
+
 import CustomMarker from '../CustomMarker'
 
 interface MapSectionProps {
@@ -68,7 +70,10 @@ const MapSection = ({ mapState, vehicleInfo, isVehicleMarkerVisible, onVehicleCl
             })} */}
             {clusterInfo?.map((point) => {
                 return (
-                    <CustomOverlayMap key={`${point.lat}-${point.lat}`} position={{ lat: point.lat/1000000, lng: point.lng/1000000 }}>
+                    <CustomOverlayMap
+                        key={`${point.lat}-${point.lat}`}
+                        position={{ lat: point.lat / 1000000, lng: point.lng / 1000000 }}
+                    >
                         <CustomMarker
                             count={point.count}
                             // onClick={() => onClick(point.coordinate, mapState.level - 1)}

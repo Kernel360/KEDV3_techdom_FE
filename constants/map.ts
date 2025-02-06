@@ -4,7 +4,7 @@ export const ZOOM_LEVEL = {
     ROUTE: 8,
     SINGLE_VEHICLE: 7,
     MAX: 1,
-    MIN: 7,
+    MIN: 12,
 } as const
 
 export const INITIAL_MAP_STATE = {

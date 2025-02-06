@@ -19,6 +19,7 @@ const CustomMarker = ({ count, onClick }: CustomMarkerProps) => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                userSelect:'none'
             }}
         >
             <div
