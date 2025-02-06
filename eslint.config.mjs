@@ -1,6 +1,6 @@
+import { FlatCompat } from '@eslint/eslintrc'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { FlatCompat } from '@eslint/eslintrc'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -115,7 +115,7 @@ const eslintConfig = [
             'no-var': 'error',
             eqeqeq: 'error',
             'object-shorthand': 'error',
-            'no-console': ['warn', { allow: ['warn', 'error'] }],
+            // 'no-console': ['warn', { allow: ['warn', 'error'] }],
 
             // TypeScript 규칙
             '@typescript-eslint/no-explicit-any': 'warn',

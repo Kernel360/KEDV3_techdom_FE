@@ -1,5 +1,5 @@
 import { httpClient } from '@/lib/apis/client'
-import { denormalizeCoordinate, getNormalizedZoomLevel, normalizeClusterResponse } from '@/lib/utils/normalize'
+import { denormalizeCoordinate } from '@/lib/utils/normalize'
 import { ClusterPoint, MapState } from '@/types/map'
 import { VehicleInfoModel } from '@/types/vehicle'
 
@@ -9,22 +9,18 @@ export const clusterService = {
         if (!level || !swCoord || !neCoord) return []
 
         const params = {
-            level: getNormalizedZoomLevel(level),
+            zoomLevel: level,
             swLat: denormalizeCoordinate(swCoord.lat),
             swLng: denormalizeCoordinate(swCoord.lng),
             neLat: denormalizeCoordinate(neCoord.lat),
             neLng: denormalizeCoordinate(neCoord.lng),
         }
 
-        const response = await httpClient.get(`api/v1/vehicle/cluster`, {
+        const response = await httpClient.get(`api/v1/vehicle/clusters`, {
             params,
         })
 
-        const normalizedClusterInfo = normalizeClusterResponse(response.data.result).filter(
-            (cluster) => cluster.count > 10, // TODO: 10 매직넘버 처리
-        )
-
-        return normalizedClusterInfo
+        return response.data.result
     },
 
     // 뷰포트 영역 내 클러스터링 정보(count)가 10 미만일 경우 전체 차량 정보 조회
@@ -32,7 +28,7 @@ export const clusterService = {
         if (!level || level > 9 || !swCoord || !neCoord) return null
 
         const params = {
-            level: getNormalizedZoomLevel(level),
+            level: level,
             swLat: denormalizeCoordinate(swCoord.lat),
             swLng: denormalizeCoordinate(swCoord.lng),
             neLat: denormalizeCoordinate(neCoord.lat),

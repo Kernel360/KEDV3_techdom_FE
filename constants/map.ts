@@ -3,15 +3,15 @@ export const ZOOM_LEVEL = {
     INITIAL: 12,
     ROUTE: 8,
     SINGLE_VEHICLE: 7,
-    MAX: 4,
-    MIN: 13,
+    MAX: 1,
+    MIN: 7,
 } as const
 
 export const INITIAL_MAP_STATE = {
     // MAP_BOUNDS와 통합 고려
     center: {
-        lat: 36.5,
-        lng: 127.5,
+        lat: 37.499955,
+        lng: 127.017458,
     },
     level: ZOOM_LEVEL.INITIAL,
 }
