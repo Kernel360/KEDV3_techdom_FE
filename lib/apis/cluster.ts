@@ -28,7 +28,7 @@ export const clusterService = {
         if (!level || level > 9 || !swCoord || !neCoord) return null
 
         const params = {
-            level: level,
+            level,
             swLat: denormalizeCoordinate(swCoord.lat),
             swLng: denormalizeCoordinate(swCoord.lng),
             neLat: denormalizeCoordinate(neCoord.lat),
